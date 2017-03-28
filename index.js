@@ -2,7 +2,8 @@
 // new webpack.ProvidePlugin({
 //   "fetch": "isomorphic-fetch",
 // })
-import 'isomorphic-fetch'
+// or
+// import 'isomorphic-fetch'
 import { Component, createFactory } from 'react'
 import qs from 'qs'
 
