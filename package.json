@@ -2,7 +2,7 @@
   "name": "react-fetch-resource",
   "version": "1.0.0",
   "description": "Manager your fetching resource for react.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel -d lib/ src/",
     "test": "echo \"Error: no test specified\" && exit 1"
