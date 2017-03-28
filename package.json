@@ -1,0 +1,25 @@
+{
+  "name": "react-fetch-resource",
+  "version": "1.0.0",
+  "description": "Manager your fetching resource for react.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "root@deploy.leesrobots.com:yulei/react-fetch-resource.git"
+  },
+  "keywords": [
+    "react",
+    "fetch",
+    "resource",
+    "restful",
+    "rest"
+  ],
+  "author": "Ray Yeee",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.4.2"
+  }
+}
