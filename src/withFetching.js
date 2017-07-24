@@ -20,6 +20,7 @@ export default function (
         const changeQueryProp = changeQueryPropName ? {[changeQueryPropName]: this.changeQuery} : {}
         const query = (typeof configure.query === 'function') ? configure.query(props) : configure.query
         const effectProps = {};
+        const effects = configure.effects;
         if (effects) {
             const effectkeys = Object.keys(effects);
             for (let efk of effectkeys) {
