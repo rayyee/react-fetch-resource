@@ -18,8 +18,10 @@ export default function (
         const changeQueryPropName = configure.changeQuery
         const changeQueryProp = changeQueryPropName ? {[changeQueryPropName]: this.changeQuery} : {}
         const query = (typeof configure.query === 'function') ? configure.query(props) : configure.query
+        const firstResourceName = resourceName.substr(0, 1);
+        const humpResourceName = firstResourceName.toUpperCase() + resourceName.substr(1);
         this.state = Object.assign(
-          {}
+          {["change" + humpResourceName]: this.setWithSideEffect}
           , {...resourceInitialState}
           , {query}
           , {...refetchProp}
@@ -34,6 +36,9 @@ export default function (
       }
       componentDidMount() {
         this.fetchResource()
+      }
+      setWithSideEffect = data => {
+          this.setState({[resourceName]: data})
       }
       fetchResource = _ => {
         // console.log('withResource fetchResource ', resourceUrl, resourceInitialState, configure);
