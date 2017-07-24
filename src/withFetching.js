@@ -1,10 +1,11 @@
-import { Component, createFactory } from 'react'
+import { Component, createFactory } from 'react';
+import pIsPromise from "p-is-promise";
 
 export default function (
   getForFetching
   , resourceUrl
   , resourceInitialState
-  , configure = {query: null, refetch: false, changeQuery: false}
+  , configure = {query: null, refetch: false, changeQuery: false, effects: false}
 ) {
   const keys = Object.keys(resourceInitialState)
   const resourceName = keys[0]
@@ -18,14 +19,33 @@ export default function (
         const changeQueryPropName = configure.changeQuery
         const changeQueryProp = changeQueryPropName ? {[changeQueryPropName]: this.changeQuery} : {}
         const query = (typeof configure.query === 'function') ? configure.query(props) : configure.query
-        const firstResourceName = resourceName.substr(0, 1);
-        const humpResourceName = firstResourceName.toUpperCase() + resourceName.substr(1);
+        const effectProps = {};
+        if (effects) {
+            const effectkeys = Object.keys(effects);
+            for (let efk of effectkeys) {
+                effectProps[efk] = function(data) {
+                    if (typeof effects[efk] === 'function') {
+                        const res = effects[efk](data);
+                        if (pIsPromise(res)) {
+                            res.then(x => this.setState({[resourceName]: x}));
+                        } else {
+                            this.setState({[resourceName]: res});
+                        }
+                    } else {
+                        this.setState({[resourceName]: Object.assign({}, effects[efk], data)});
+                    }
+                };
+            }
+        }
+        // const firstResourceName = resourceName.substr(0, 1);
+        // const humpResourceName = firstResourceName.toUpperCase() + resourceName.substr(1);
         this.state = Object.assign(
-          {["change" + humpResourceName]: this.setWithSideEffect}
+          {}
           , {...resourceInitialState}
           , {query}
           , {...refetchProp}
           , {...changeQueryProp}
+          , {...effectProps}
         )
       }
       componentWillReceiveProps(nextProps) {
@@ -36,9 +56,6 @@ export default function (
       }
       componentDidMount() {
         this.fetchResource()
-      }
-      setWithSideEffect = data => {
-          this.setState({[resourceName]: data})
       }
       fetchResource = _ => {
         // console.log('withResource fetchResource ', resourceUrl, resourceInitialState, configure);
