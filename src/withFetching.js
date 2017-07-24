@@ -24,7 +24,7 @@ export default function (
         if (effects) {
             const effectkeys = Object.keys(effects);
             for (let efk of effectkeys) {
-                effectProps[efk] = function(data) {
+                effectProps[efk] = (data) => {
                     if (typeof effects[efk] === 'function') {
                         const res = effects[efk](data);
                         if (pIsPromise(res)) {
