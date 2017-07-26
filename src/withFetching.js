@@ -1,5 +1,5 @@
 import { Component, createFactory } from 'react';
-import pIsPromise from "p-is-promise";
+import isPromise from "is-promise";
 
 export default function (
   getForFetching
@@ -27,7 +27,7 @@ export default function (
                 effectProps[efk] = (data) => {
                     if (typeof effects[efk] === 'function') {
                         const res = effects[efk](data);
-                        if (pIsPromise(res)) {
+                        if (isPromise(res)) {
                             res.then(x => this.setState({[resourceName]: x}));
                         } else {
                             this.setState({[resourceName]: res});
